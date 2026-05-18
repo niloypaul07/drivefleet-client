@@ -119,12 +119,26 @@ export default function MyCars() {
               </TableCell>
               <TableCell>
                 <div className="flex justify-center gap-2">
-                  <Button isIconOnly size="sm" variant="light" color="primary" onClick={() => openEditModal(car)}>
-                    <Edit className="w-4 h-4" />
-                  </Button>
-                  <Button isIconOnly size="sm" variant="light" color="danger" onClick={() => openDeleteModal(car)}>
-                    <Trash2 className="w-4 h-4" />
-                  </Button>
+                  <button 
+                    onClick={() => {
+                      console.log("Opening edit modal for:", car);
+                      openEditModal(car);
+                    }} 
+                    className="p-2 hover:bg-primary/10 rounded-lg text-primary transition-colors duration-200"
+                    title="Edit Car"
+                  >
+                    <Edit className="w-5 h-5" />
+                  </button>
+                  <button 
+                    onClick={() => {
+                      console.log("Opening delete modal for:", car);
+                      openDeleteModal(car);
+                    }} 
+                    className="p-2 hover:bg-danger/10 rounded-lg text-danger transition-colors duration-200"
+                    title="Delete Car"
+                  >
+                    <Trash2 className="w-5 h-5" />
+                  </button>
                 </div>
               </TableCell>
             </TableRow>

@@ -37,6 +37,7 @@ export default function MyBookings() {
           <TableColumn>CAR</TableColumn>
           <TableColumn>BOOKING DATE</TableColumn>
           <TableColumn>DRIVER</TableColumn>
+          <TableColumn>SPECIAL NOTE</TableColumn>
           <TableColumn>TOTAL PRICE</TableColumn>
           <TableColumn>STATUS</TableColumn>
         </TableHeader>
@@ -54,6 +55,9 @@ export default function MyBookings() {
                 </Link>
               </TableCell>
               <TableCell>{booking.driverNeeded ? "Requested" : "No"}</TableCell>
+              <TableCell className="max-w-[200px] truncate text-default-500 italic">
+                {booking.specialNote || "—"}
+              </TableCell>
               <TableCell className="font-semibold">${booking.totalPrice}</TableCell>
               <TableCell>
                 <Chip color="success" variant="flat">{booking.status || "Confirmed"}</Chip>

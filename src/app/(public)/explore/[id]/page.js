@@ -1,6 +1,6 @@
 'use client';
 
-import { Button, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, Textarea, Select, SelectItem, Spinner, Chip, Divider } from "@heroui/react";
+import { Button, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, Textarea, Select, SelectItem, Spinner, Chip, Divider, Input } from "@heroui/react";
 import { ArrowLeft, CheckCircle2 } from "lucide-react";
 import Link from "next/link";
 import { useState, useEffect, use } from "react";
@@ -46,6 +46,7 @@ export default function CarDetails({ params }) {
       carName: car.modelName,
       driverNeeded: formData.get("driverNeeded") === "true",
       specialNote: formData.get("specialNote"),
+      bookingDate: formData.get("bookingDate") ? new Date(formData.get("bookingDate")) : new Date(),
       totalPrice: car.price,
       status: "Confirmed"
     };
@@ -134,7 +135,17 @@ export default function CarDetails({ params }) {
                   <p className="text-sm text-default-500">Total Price: <span className="text-foreground font-bold">${car.price}</span></p>
                 </div>
 
-                <Select name="driverNeeded" label="Do you need a driver?" variant="bordered" isRequired defaultSelectedKeys={["false"]}>
+                <Input
+                  name="bookingDate"
+                  label="Select Rental Start Date"
+                  type="date"
+                  variant="bordered"
+                  isRequired
+                  defaultValue={new Date().toISOString().split('T')[0]}
+                  className="mb-4"
+                />
+
+                <Select name="driverNeeded" label="Do you need a driver?" variant="bordered" isRequired defaultSelectedKeys={["false"]} className="mb-4">
                   <SelectItem key="false" value="false">No, I will drive myself</SelectItem>
                   <SelectItem key="true" value="true">Yes, I need a driver</SelectItem>
                 </Select>

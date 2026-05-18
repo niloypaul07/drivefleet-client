@@ -50,7 +50,7 @@ export default function MyBookings() {
               </TableCell>
               <TableCell>
                 <Link href={`/explore/${booking.carId}`} className="text-primary hover:underline font-medium">
-                  {format(new Date(booking.bookingDate), "PPp")}
+                  {booking.bookingDate ? format(new Date(booking.bookingDate), "PPp") : format(new Date(), "PPp")}
                 </Link>
               </TableCell>
               <TableCell>{booking.driverNeeded ? "Requested" : "No"}</TableCell>

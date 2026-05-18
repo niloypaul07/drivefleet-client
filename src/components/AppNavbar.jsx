@@ -19,6 +19,7 @@ import {
 } from "@heroui/react";
 import { useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
+import NextLink from "next/link";
 import { CarFront } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
 import toast from "react-hot-toast";
@@ -53,7 +54,7 @@ export default function AppNavbar() {
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
           className="sm:hidden"
         />
-        <NavbarBrand as={Link} href="/" className="cursor-pointer text-foreground">
+        <NavbarBrand as={NextLink} href="/" className="cursor-pointer text-foreground">
           <CarFront className="w-8 h-8 mr-2 text-primary" />
           <p className="font-bold text-inherit tracking-tight text-xl">DriveFleet</p>
         </NavbarBrand>
@@ -62,7 +63,7 @@ export default function AppNavbar() {
       <NavbarContent className="hidden sm:flex gap-6" justify="center">
         {menuItems.map((item) => (
           <NavbarItem key={item.name} isActive={pathname === item.href}>
-            <Link color={pathname === item.href ? "primary" : "foreground"} href={item.href}>
+            <Link as={NextLink} color={pathname === item.href ? "primary" : "foreground"} href={item.href}>
               {item.name}
             </Link>
           </NavbarItem>
@@ -90,9 +91,9 @@ export default function AppNavbar() {
                 <p className="font-semibold">Signed in as</p>
                 <p className="font-semibold">{user?.email}</p>
               </DropdownItem>
-              <DropdownItem key="add_car" href="/add-car">Add Car</DropdownItem>
-              <DropdownItem key="my_bookings" href="/my-bookings">My Bookings</DropdownItem>
-              <DropdownItem key="my_cars" href="/my-cars">My Added Cars</DropdownItem>
+              <DropdownItem key="add_car" as={NextLink} href="/add-car">Add Car</DropdownItem>
+              <DropdownItem key="my_bookings" as={NextLink} href="/my-bookings">My Bookings</DropdownItem>
+              <DropdownItem key="my_cars" as={NextLink} href="/my-cars">My Added Cars</DropdownItem>
               <DropdownItem key="logout" color="danger" onPress={handleLogout}>
                 Log Out
               </DropdownItem>
@@ -101,10 +102,10 @@ export default function AppNavbar() {
         ) : (
           <>
             <NavbarItem className="hidden lg:flex">
-              <Link href="/login" color="foreground">Login</Link>
+              <Link as={NextLink} href="/login" color="foreground">Login</Link>
             </NavbarItem>
             <NavbarItem>
-              <Button as={Link} color="primary" href="/register" variant="flat">
+              <Button as={NextLink} color="primary" href="/register" variant="flat">
                 Sign Up
               </Button>
             </NavbarItem>
@@ -116,6 +117,7 @@ export default function AppNavbar() {
         {menuItems.map((item, index) => (
           <NavbarMenuItem key={`${item.name}-${index}`}>
             <Link
+              as={NextLink}
               color={pathname === item.href ? "primary" : "foreground"}
               className="w-full"
               href={item.href}
@@ -127,15 +129,15 @@ export default function AppNavbar() {
         ))}
         {user ? (
           <>
-            <NavbarMenuItem><Link href="/add-car" size="lg" color="foreground">Add Car</Link></NavbarMenuItem>
-            <NavbarMenuItem><Link href="/my-bookings" size="lg" color="foreground">My Bookings</Link></NavbarMenuItem>
-            <NavbarMenuItem><Link href="/my-cars" size="lg" color="foreground">My Added Cars</Link></NavbarMenuItem>
+            <NavbarMenuItem><Link as={NextLink} href="/add-car" size="lg" color="foreground">Add Car</Link></NavbarMenuItem>
+            <NavbarMenuItem><Link as={NextLink} href="/my-bookings" size="lg" color="foreground">My Bookings</Link></NavbarMenuItem>
+            <NavbarMenuItem><Link as={NextLink} href="/my-cars" size="lg" color="foreground">My Added Cars</Link></NavbarMenuItem>
             <NavbarMenuItem><Link onPress={handleLogout} size="lg" color="danger" className="cursor-pointer">Log Out</Link></NavbarMenuItem>
           </>
         ) : (
           <>
-            <NavbarMenuItem><Link href="/login" size="lg" color="foreground">Login</Link></NavbarMenuItem>
-            <NavbarMenuItem><Link href="/register" size="lg" color="primary">Sign Up</Link></NavbarMenuItem>
+            <NavbarMenuItem><Link as={NextLink} href="/login" size="lg" color="foreground">Login</Link></NavbarMenuItem>
+            <NavbarMenuItem><Link as={NextLink} href="/register" size="lg" color="primary">Sign Up</Link></NavbarMenuItem>
           </>
         )}
       </NavbarMenu>

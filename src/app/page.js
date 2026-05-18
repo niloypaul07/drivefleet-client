@@ -74,7 +74,7 @@ export default function Home() {
               <div key={car._id} className="bg-content1 border border-divider rounded-2xl overflow-hidden hover:shadow-lg transition-all hover:-translate-y-1">
                 <div className="aspect-[16/9] bg-default-200 relative">
                   <img 
-                    src={car.image} 
+                    src={car.image || car.imageUrl} 
                     alt={car.modelName} 
                     className="w-full h-full object-cover"
                   />

@@ -105,7 +105,7 @@ export default function MyCars() {
               <TableCell>
                 <div className="flex items-center gap-3">
                   <div className="w-12 h-12 bg-default-200 rounded-md overflow-hidden shrink-0">
-                    <img src={car.image} className="w-full h-full object-cover" alt={car.modelName} />
+                    <img src={car.image || car.imageUrl} className="w-full h-full object-cover" alt={car.modelName} />
                   </div>
                   <span className="font-semibold">{car.modelName}</span>
                 </div>
@@ -119,10 +119,10 @@ export default function MyCars() {
               </TableCell>
               <TableCell>
                 <div className="flex justify-center gap-2">
-                  <Button isIconOnly size="sm" variant="light" color="primary" onPress={() => openEditModal(car)}>
+                  <Button isIconOnly size="sm" variant="light" color="primary" onClick={() => openEditModal(car)}>
                     <Edit className="w-4 h-4" />
                   </Button>
-                  <Button isIconOnly size="sm" variant="light" color="danger" onPress={() => openDeleteModal(car)}>
+                  <Button isIconOnly size="sm" variant="light" color="danger" onClick={() => openDeleteModal(car)}>
                     <Trash2 className="w-4 h-4" />
                   </Button>
                 </div>
@@ -153,13 +153,13 @@ export default function MyCars() {
                       <SelectItem key="Unavailable" value="Unavailable">Unavailable</SelectItem>
                     </Select>
                     <Input name="location" label="Location" defaultValue={selectedCar.location} isRequired variant="bordered" />
-                    <Input name="image" className="md:col-span-2" label="Image URL" defaultValue={selectedCar.image} isRequired variant="bordered" />
+                    <Input name="image" className="md:col-span-2" label="Image URL" defaultValue={selectedCar.image || selectedCar.imageUrl} isRequired variant="bordered" />
                     <Textarea name="description" className="md:col-span-2" label="Description" defaultValue={selectedCar.description} isRequired variant="bordered" />
                   </div>
                 )}
               </ModalBody>
               <ModalFooter>
-                <Button color="danger" variant="light" onPress={onClose}>
+                <Button color="danger" variant="light" onClick={onClose}>
                   Cancel
                 </Button>
                 <Button color="primary" type="submit" isLoading={isUpdating}>
@@ -182,10 +182,10 @@ export default function MyCars() {
                 <p className="text-sm text-default-500">This action cannot be undone.</p>
               </ModalBody>
               <ModalFooter>
-                <Button color="default" variant="light" onPress={onClose}>
+                <Button color="default" variant="light" onClick={onClose}>
                   Cancel
                 </Button>
-                <Button color="danger" onPress={handleDelete} isLoading={isDeleting}>
+                <Button color="danger" onClick={handleDelete} isLoading={isDeleting}>
                   Delete
                 </Button>
               </ModalFooter>

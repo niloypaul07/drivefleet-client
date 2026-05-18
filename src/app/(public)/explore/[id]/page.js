@@ -78,7 +78,7 @@ export default function CarDetails({ params }) {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
         <div className="rounded-2xl overflow-hidden border border-divider h-[400px] lg:h-[500px]">
-          <img src={car.image} alt={car.modelName} className="w-full h-full object-cover" />
+          <img src={car.image || car.imageUrl} alt={car.modelName} className="w-full h-full object-cover" />
         </div>
 
         <div className="space-y-6">
@@ -115,7 +115,7 @@ export default function CarDetails({ params }) {
           </div>
 
           <div className="pt-8">
-            <Button color="primary" size="lg" className="w-full shadow-xl" onPress={onOpen} isDisabled={car.status !== "Available"}>
+            <Button color="primary" size="lg" className="w-full shadow-xl" onClick={onOpen} isDisabled={car.status !== "Available"}>
               {car.status === "Available" ? "Book Now" : "Currently Unavailable"}
             </Button>
           </div>
@@ -147,7 +147,7 @@ export default function CarDetails({ params }) {
                 />
               </ModalBody>
               <ModalFooter>
-                <Button color="danger" variant="light" onPress={onClose}>Cancel</Button>
+                <Button color="danger" variant="light" onClick={onClose}>Cancel</Button>
                 <Button color="primary" type="submit" isLoading={isBooking}>Confirm Booking</Button>
               </ModalFooter>
             </form>

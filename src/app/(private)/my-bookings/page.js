@@ -5,6 +5,7 @@ import { format } from "date-fns";
 import { useState, useEffect } from "react";
 import api from "@/lib/axios";
 import toast from "react-hot-toast";
+import Link from "next/link";
 
 export default function MyBookings() {
   const [bookings, setBookings] = useState([]);
@@ -47,7 +48,11 @@ export default function MyBookings() {
                   <span className="font-semibold">{booking.carName}</span>
                 </div>
               </TableCell>
-              <TableCell>{format(new Date(booking.bookingDate), "PPp")}</TableCell>
+              <TableCell>
+                <Link href={`/explore/${booking.carId}`} className="text-primary hover:underline font-medium">
+                  {format(new Date(booking.bookingDate), "PPp")}
+                </Link>
+              </TableCell>
               <TableCell>{booking.driverNeeded ? "Requested" : "No"}</TableCell>
               <TableCell className="font-semibold">${booking.totalPrice}</TableCell>
               <TableCell>

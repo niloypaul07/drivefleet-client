@@ -1,6 +1,6 @@
 'use client';
 
-import { Button, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, Input, Textarea, Checkbox, Spinner, Chip } from "@heroui/react";
+import { Button, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, Textarea, Select, SelectItem, Spinner, Chip, Divider } from "@heroui/react";
 import { ArrowLeft, CheckCircle2 } from "lucide-react";
 import Link from "next/link";
 import { useState, useEffect, use } from "react";
@@ -15,7 +15,7 @@ export default function CarDetails({ params }) {
 
   const [car, setCar] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const {isOpen, onOpen, onOpenChange} = useDisclosure();
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [isBooking, setIsBooking] = useState(false);
 
   useEffect(() => {
@@ -23,7 +23,7 @@ export default function CarDetails({ params }) {
       try {
         const { data } = await api.get(`/cars/${id}`);
         if (!data) {
-          router.push("/404");
+          router.push("/not-found");
           return;
         }
         setCar(data);
@@ -40,13 +40,13 @@ export default function CarDetails({ params }) {
     e.preventDefault();
     setIsBooking(true);
     const formData = new FormData(e.target);
-    
+
     const bookingData = {
       carId: car._id,
       carName: car.modelName,
       driverNeeded: formData.get("driverNeeded") === "true",
       specialNote: formData.get("specialNote"),
-      totalPrice: car.price, // assuming booking for 1 day, can be enhanced
+      totalPrice: car.price,
       status: "Confirmed"
     };
 
@@ -80,7 +80,7 @@ export default function CarDetails({ params }) {
         <div className="rounded-2xl overflow-hidden border border-divider h-[400px] lg:h-[500px]">
           <img src={car.image} alt={car.modelName} className="w-full h-full object-cover" />
         </div>
-        
+
         <div className="space-y-6">
           <div>
             <div className="flex items-center justify-between mb-2">
@@ -93,7 +93,7 @@ export default function CarDetails({ params }) {
             </div>
           </div>
 
-          <Divider className="my-4" />
+          <Divider />
 
           <div>
             <h3 className="text-xl font-semibold mb-3">Specifications</h3>
@@ -107,13 +107,11 @@ export default function CarDetails({ params }) {
             </ul>
           </div>
 
-          <Divider className="my-4" />
+          <Divider />
 
           <div>
             <h3 className="text-xl font-semibold mb-3">Description</h3>
-            <p className="text-default-600 leading-relaxed">
-              {car.description}
-            </p>
+            <p className="text-default-600 leading-relaxed">{car.description}</p>
           </div>
 
           <div className="pt-8">
@@ -135,26 +133,22 @@ export default function CarDetails({ params }) {
                   <p className="font-semibold">{car.modelName}</p>
                   <p className="text-sm text-default-500">Total Price: <span className="text-foreground font-bold">${car.price}</span></p>
                 </div>
-                
+
                 <Select name="driverNeeded" label="Do you need a driver?" variant="bordered" isRequired defaultSelectedKeys={["false"]}>
                   <SelectItem key="false" value="false">No, I will drive myself</SelectItem>
                   <SelectItem key="true" value="true">Yes, I need a driver</SelectItem>
                 </Select>
 
-                <Textarea 
+                <Textarea
                   name="specialNote"
-                  label="Special Notes or Requests" 
-                  placeholder="e.g. Need child seat" 
+                  label="Special Notes or Requests"
+                  placeholder="e.g. Need child seat"
                   variant="bordered"
                 />
               </ModalBody>
               <ModalFooter>
-                <Button color="danger" variant="light" onPress={onClose}>
-                  Cancel
-                </Button>
-                <Button color="primary" type="submit" isLoading={isBooking}>
-                  Confirm Booking
-                </Button>
+                <Button color="danger" variant="light" onPress={onClose}>Cancel</Button>
+                <Button color="primary" type="submit" isLoading={isBooking}>Confirm Booking</Button>
               </ModalFooter>
             </form>
           )}

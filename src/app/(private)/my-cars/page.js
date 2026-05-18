@@ -9,8 +9,8 @@ import toast from "react-hot-toast";
 export default function MyCars() {
   const [cars, setCars] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const {isOpen: isEditOpen, onOpen: onEditOpen, onOpenChange: onEditChange} = useDisclosure();
-  const {isOpen: isDeleteOpen, onOpen: onDeleteOpen, onOpenChange: onDeleteChange} = useDisclosure();
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   
   const [selectedCar, setSelectedCar] = useState(null);
   const [isUpdating, setIsUpdating] = useState(false);
@@ -33,12 +33,12 @@ export default function MyCars() {
 
   const openEditModal = (car) => {
     setSelectedCar(car);
-    onEditOpen();
+    setIsEditOpen(true);
   };
 
   const openDeleteModal = (car) => {
     setSelectedCar(car);
-    onDeleteOpen();
+    setIsDeleteOpen(true);
   };
 
   const handleUpdate = async (e) => {
@@ -60,7 +60,7 @@ export default function MyCars() {
       await api.put(`/cars/${selectedCar._id}`, updateData);
       toast.success("Car updated successfully");
       fetchMyCars();
-      onEditChange(false);
+      setIsEditOpen(false);
     } catch (error) {
       toast.error("Update failed");
     } finally {
@@ -74,7 +74,7 @@ export default function MyCars() {
       await api.delete(`/cars/${selectedCar._id}`);
       toast.success("Car deleted");
       fetchMyCars();
-      onDeleteChange(false);
+      setIsDeleteOpen(false);
     } catch (error) {
       toast.error("Delete failed");
     } finally {
@@ -146,13 +146,15 @@ export default function MyCars() {
         </TableBody>
       </Table>
 
-      {/* Edit Modal */}
-      <Modal isOpen={isEditOpen} onOpenChange={onEditChange} size="2xl">
-        <ModalContent>
-          {(onClose) => (
+      {/* Custom Edit Modal */}
+      {isEditOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-md transition-all duration-300">
+          <div className="relative w-full max-w-2xl bg-content1 border border-divider rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
             <form onSubmit={handleUpdate}>
-              <ModalHeader className="flex flex-col gap-1">Update Car Details</ModalHeader>
-              <ModalBody>
+              <div className="px-6 py-4 border-b border-divider">
+                <h3 className="text-xl font-bold text-foreground">Update Car Details</h3>
+              </div>
+              <div className="p-6">
                 {selectedCar && (
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <Input name="price" label="Daily Rent Price ($)" type="number" defaultValue={selectedCar.price} isRequired variant="bordered" />
@@ -171,42 +173,42 @@ export default function MyCars() {
                     <Textarea name="description" className="md:col-span-2" label="Description" defaultValue={selectedCar.description} isRequired variant="bordered" />
                   </div>
                 )}
-              </ModalBody>
-              <ModalFooter>
-                <Button color="danger" variant="light" onClick={onClose}>
+              </div>
+              <div className="px-6 py-4 bg-default-50 border-t border-divider flex justify-end gap-3">
+                <Button color="danger" variant="light" onClick={() => setIsEditOpen(false)}>
                   Cancel
                 </Button>
                 <Button color="primary" type="submit" isLoading={isUpdating}>
                   Save Changes
                 </Button>
-              </ModalFooter>
+              </div>
             </form>
-          )}
-        </ModalContent>
-      </Modal>
+          </div>
+        </div>
+      )}
 
-      {/* Delete Modal */}
-      <Modal isOpen={isDeleteOpen} onOpenChange={onDeleteChange}>
-        <ModalContent>
-          {(onClose) => (
-            <>
-              <ModalHeader className="flex flex-col gap-1">Confirm Deletion</ModalHeader>
-              <ModalBody>
-                <p>Are you sure you want to delete <b>{selectedCar?.modelName}</b>?</p>
-                <p className="text-sm text-default-500">This action cannot be undone.</p>
-              </ModalBody>
-              <ModalFooter>
-                <Button color="default" variant="light" onClick={onClose}>
-                  Cancel
-                </Button>
-                <Button color="danger" onClick={handleDelete} isLoading={isDeleting}>
-                  Delete
-                </Button>
-              </ModalFooter>
-            </>
-          )}
-        </ModalContent>
-      </Modal>
+      {/* Custom Delete Modal */}
+      {isDeleteOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-md transition-all duration-300">
+          <div className="relative w-full max-w-md bg-content1 border border-divider rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+            <div className="px-6 py-4 border-b border-divider">
+              <h3 className="text-xl font-bold text-foreground">Confirm Deletion</h3>
+            </div>
+            <div className="p-6 space-y-2">
+              <p className="text-foreground">Are you sure you want to delete <b>{selectedCar?.modelName}</b>?</p>
+              <p className="text-sm text-default-500">This action cannot be undone and will permanently remove this listing.</p>
+            </div>
+            <div className="px-6 py-4 bg-default-50 border-t border-divider flex justify-end gap-3">
+              <Button color="default" variant="light" onClick={() => setIsDeleteOpen(false)}>
+                Cancel
+              </Button>
+              <Button color="danger" onClick={handleDelete} isLoading={isDeleting}>
+                Delete
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

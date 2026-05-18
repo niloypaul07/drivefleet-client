@@ -1,6 +1,6 @@
 'use client';
 
-import { Input, Button, Link, Divider } from "@heroui/react";
+import { Button, Link, Divider } from "@heroui/react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import NextLink from "next/link";
@@ -88,41 +88,48 @@ export default function Login() {
         )}
 
         <form onSubmit={handleLogin} className="space-y-6">
-          <div className="space-y-6">
-            <Input
-              type="email"
-              label="Email Address"
-              labelPlacement="outside"
-              placeholder="you@example.com"
-              variant="bordered"
-              isRequired
-              value={email}
-              onChange={(e) => {
-                setErrorMsg("");
-                setEmail(e.target.value);
-              }}
-              startContent={<Mail className="w-4 h-4 text-default-400 mr-1" />}
-              classNames={{
-                inputWrapper: "h-12 border-divider/60 hover:border-primary/50 focus-within:!border-primary transition-all duration-200 mt-1.5"
-              }}
-            />
-            <Input
-              type="password"
-              label="Password"
-              labelPlacement="outside"
-              placeholder="Enter your password"
-              variant="bordered"
-              isRequired
-              value={password}
-              onChange={(e) => {
-                setErrorMsg("");
-                setPassword(e.target.value);
-              }}
-              startContent={<Lock className="w-4 h-4 text-default-400 mr-1" />}
-              classNames={{
-                inputWrapper: "h-12 border-divider/60 hover:border-primary/50 focus-within:!border-primary transition-all duration-200 mt-1.5"
-              }}
-            />
+          <div className="space-y-5">
+            {/* Email Field Row */}
+            <div className="space-y-2">
+              <label className="block text-sm font-semibold text-default-700 tracking-wide">
+                Email Address
+              </label>
+              <div className="relative flex items-center">
+                <Mail className="absolute left-4 w-5 h-5 text-default-400 pointer-events-none z-20" />
+                <input
+                  type="email"
+                  required
+                  placeholder="you@example.com"
+                  value={email}
+                  onChange={(e) => {
+                    setErrorMsg("");
+                    setEmail(e.target.value);
+                  }}
+                  className="w-full h-12 pl-12 pr-4 bg-default-100/50 hover:bg-default-100/80 focus:bg-default-100/80 border border-divider hover:border-primary/50 focus:border-primary rounded-2xl outline-none text-foreground text-sm font-medium transition-all duration-200 z-10"
+                />
+              </div>
+            </div>
+
+            {/* Password Field Row */}
+            <div className="space-y-2">
+              <label className="block text-sm font-semibold text-default-700 tracking-wide">
+                Password
+              </label>
+              <div className="relative flex items-center">
+                <Lock className="absolute left-4 w-5 h-5 text-default-400 pointer-events-none z-20" />
+                <input
+                  type="password"
+                  required
+                  placeholder="Enter your password"
+                  value={password}
+                  onChange={(e) => {
+                    setErrorMsg("");
+                    setPassword(e.target.value);
+                  }}
+                  className="w-full h-12 pl-12 pr-4 bg-default-100/50 hover:bg-default-100/80 focus:bg-default-100/80 border border-divider hover:border-primary/50 focus:border-primary rounded-2xl outline-none text-foreground text-sm font-medium transition-all duration-200 z-10"
+                />
+              </div>
+            </div>
           </div>
 
           <Button 
@@ -144,7 +151,7 @@ export default function Login() {
 
           <Button 
             variant="bordered" 
-            className="w-full border-divider/60 hover:bg-default-100/50 font-semibold h-12 text-sm" 
+            className="w-full border-divider hover:bg-default-100/50 font-semibold h-12 text-sm" 
             onClick={handleGoogleSignIn}
             isLoading={isGoogleLoading}
             startContent={!isGoogleLoading && (

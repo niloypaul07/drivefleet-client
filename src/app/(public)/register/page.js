@@ -1,6 +1,6 @@
 'use client';
 
-import { Input, Button, Link, Divider } from "@heroui/react";
+import { Button, Link, Divider } from "@heroui/react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import NextLink from "next/link";
@@ -106,78 +106,92 @@ export default function Register() {
         )}
 
         <form onSubmit={handleRegister} className="space-y-6">
-          <div className="space-y-6">
-            <Input
-              type="text"
-              label="Full Name"
-              labelPlacement="outside"
-              placeholder="John Doe"
-              variant="bordered"
-              isRequired
-              value={name}
-              onChange={(e) => {
-                setErrorMsg("");
-                setName(e.target.value);
-              }}
-              startContent={<User className="w-4 h-4 text-default-400 mr-1" />}
-              classNames={{
-                inputWrapper: "h-12 border-divider/60 hover:border-primary/50 focus-within:!border-primary transition-all duration-200 mt-1.5"
-              }}
-            />
-            <Input
-              type="email"
-              label="Email Address"
-              labelPlacement="outside"
-              placeholder="john@example.com"
-              variant="bordered"
-              isRequired
-              value={email}
-              onChange={(e) => {
-                setErrorMsg("");
-                setEmail(e.target.value);
-              }}
-              startContent={<Mail className="w-4 h-4 text-default-400 mr-1" />}
-              classNames={{
-                inputWrapper: "h-12 border-divider/60 hover:border-primary/50 focus-within:!border-primary transition-all duration-200 mt-1.5"
-              }}
-            />
-            <Input
-              type="url"
-              label="Photo URL (Optional)"
-              labelPlacement="outside"
-              placeholder="https://example.com/avatar.jpg"
-              variant="bordered"
-              value={photoURL}
-              onChange={(e) => {
-                setErrorMsg("");
-                setPhotoURL(e.target.value);
-              }}
-              startContent={<Image className="w-4 h-4 text-default-400 mr-1" />}
-              classNames={{
-                inputWrapper: "h-12 border-divider/60 hover:border-primary/50 focus-within:!border-primary transition-all duration-200 mt-1.5"
-              }}
-            />
-            <Input
-              type="password"
-              label="Password"
-              labelPlacement="outside"
-              placeholder="Create a strong password"
-              variant="bordered"
-              isRequired
-              value={password}
-              onChange={(e) => {
-                setErrorMsg("");
-                setPassword(e.target.value);
-              }}
-              startContent={<Lock className="w-4 h-4 text-default-400 mr-1" />}
-              isInvalid={hasSubmitted && !isPasswordValid}
-              classNames={{
-                inputWrapper: "h-12 border-divider/60 hover:border-primary/50 focus-within:!border-primary transition-all duration-200 mt-1.5"
-              }}
-            />
+          <div className="space-y-5">
+            {/* Full Name Row */}
+            <div className="space-y-2">
+              <label className="block text-sm font-semibold text-default-700 tracking-wide">
+                Full Name
+              </label>
+              <div className="relative flex items-center">
+                <User className="absolute left-4 w-5 h-5 text-default-400 pointer-events-none z-20" />
+                <input
+                  type="text"
+                  required
+                  placeholder="John Doe"
+                  value={name}
+                  onChange={(e) => {
+                    setErrorMsg("");
+                    setName(e.target.value);
+                  }}
+                  className="w-full h-12 pl-12 pr-4 bg-default-100/50 hover:bg-default-100/80 focus:bg-default-100/80 border border-divider hover:border-primary/50 focus:border-primary rounded-2xl outline-none text-foreground text-sm font-medium transition-all duration-200 z-10"
+                />
+              </div>
+            </div>
+
+            {/* Email Address Row */}
+            <div className="space-y-2">
+              <label className="block text-sm font-semibold text-default-700 tracking-wide">
+                Email Address
+              </label>
+              <div className="relative flex items-center">
+                <Mail className="absolute left-4 w-5 h-5 text-default-400 pointer-events-none z-20" />
+                <input
+                  type="email"
+                  required
+                  placeholder="john@example.com"
+                  value={email}
+                  onChange={(e) => {
+                    setErrorMsg("");
+                    setEmail(e.target.value);
+                  }}
+                  className="w-full h-12 pl-12 pr-4 bg-default-100/50 hover:bg-default-100/80 focus:bg-default-100/80 border border-divider hover:border-primary/50 focus:border-primary rounded-2xl outline-none text-foreground text-sm font-medium transition-all duration-200 z-10"
+                />
+              </div>
+            </div>
+
+            {/* Photo URL Row */}
+            <div className="space-y-2">
+              <label className="block text-sm font-semibold text-default-700 tracking-wide">
+                Photo URL (Optional)
+              </label>
+              <div className="relative flex items-center">
+                <Image className="absolute left-4 w-5 h-5 text-default-400 pointer-events-none z-20" />
+                <input
+                  type="url"
+                  placeholder="https://example.com/avatar.jpg"
+                  value={photoURL}
+                  onChange={(e) => {
+                    setErrorMsg("");
+                    setPhotoURL(e.target.value);
+                  }}
+                  className="w-full h-12 pl-12 pr-4 bg-default-100/50 hover:bg-default-100/80 focus:bg-default-100/80 border border-divider hover:border-primary/50 focus:border-primary rounded-2xl outline-none text-foreground text-sm font-medium transition-all duration-200 z-10"
+                />
+              </div>
+            </div>
+
+            {/* Password Row */}
+            <div className="space-y-2">
+              <label className="block text-sm font-semibold text-default-700 tracking-wide">
+                Password
+              </label>
+              <div className="relative flex items-center">
+                <Lock className="absolute left-4 w-5 h-5 text-default-400 pointer-events-none z-20" />
+                <input
+                  type="password"
+                  required
+                  placeholder="Create a strong password"
+                  value={password}
+                  onChange={(e) => {
+                    setErrorMsg("");
+                    setPassword(e.target.value);
+                  }}
+                  className={`w-full h-12 pl-12 pr-4 bg-default-100/50 hover:bg-default-100/80 focus:bg-default-100/80 border ${hasSubmitted && !isPasswordValid ? 'border-danger focus:border-danger' : 'border-divider hover:border-primary/50 focus:border-primary'} rounded-2xl outline-none text-foreground text-sm font-medium transition-all duration-200 z-10`}
+                />
+              </div>
+            </div>
 
             {/* Live Password Validation Checklist */}
-            <div className="space-y-2.5 p-4 bg-default-50/40 rounded-2xl border border-divider/40 text-xs transition-all duration-300">
+            <div className="space-y-2.5 p-4 bg-default-50/40 rounded-2xl border border-divider/40 text-xs transition-all duration-300 mt-2">
               <p className="font-semibold text-default-600 mb-1">Password Requirements:</p>
               <div className="flex items-center gap-2.5">
                 <span className={`flex items-center justify-center w-4 h-4 rounded-full border transition-all duration-300 ${passHasMinLength ? 'bg-success/20 border-success text-success scale-110 shadow-sm' : 'border-default-300 text-default-400'}`}>
@@ -225,7 +239,7 @@ export default function Register() {
 
           <Button 
             variant="bordered" 
-            className="w-full border-divider/60 hover:bg-default-100/50 font-semibold h-12 text-sm" 
+            className="w-full border-divider hover:bg-default-100/50 font-semibold h-12 text-sm" 
             onClick={handleGoogleSignIn}
             isLoading={isGoogleLoading}
             startContent={!isGoogleLoading && (

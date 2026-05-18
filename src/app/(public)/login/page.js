@@ -6,11 +6,12 @@ import { useRouter } from "next/navigation";
 import NextLink from "next/link";
 import { authClient } from "@/lib/auth-client";
 import toast from "react-hot-toast";
-import { Mail, Lock, ArrowRight, CarFront } from "lucide-react";
+import { Mail, Lock, ArrowRight, CarFront, AlertCircle } from "lucide-react";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
   const router = useRouter();
@@ -18,6 +19,7 @@ export default function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+    setErrorMsg("");
 
     try {
       const { data, error } = await authClient.signIn.email({
@@ -26,12 +28,14 @@ export default function Login() {
       });
 
       if (error) {
+        setErrorMsg(error.message || "Invalid credentials. Please check your email and password.");
         toast.error(error.message || "Invalid credentials. Please try again.");
       } else {
         toast.success("Welcome back to DriveFleet!");
         router.push("/");
       }
     } catch (err) {
+      setErrorMsg("An unexpected error occurred. Please try again later.");
       toast.error("An unexpected error occurred.");
     } finally {
       setIsLoading(false);
@@ -40,12 +44,14 @@ export default function Login() {
 
   const handleGoogleSignIn = async () => {
     setIsGoogleLoading(true);
+    setErrorMsg("");
     try {
       await authClient.signIn.social({
         provider: "google",
         callbackURL: "/", // redirect to home after login
       });
     } catch (err) {
+      setErrorMsg("Google sign in failed. Please try again.");
       toast.error("Google sign in failed.");
       setIsGoogleLoading(false);
     }
@@ -57,8 +63,8 @@ export default function Login() {
       <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-primary/20 rounded-full blur-3xl pointer-events-none animate-pulse duration-[6s]" />
       <div className="absolute bottom-1/4 right-1/4 translate-x-1/2 translate-y-1/2 w-96 h-96 bg-secondary/20 rounded-full blur-3xl pointer-events-none animate-pulse duration-[8s]" />
 
-      <div className="relative max-w-md w-full bg-content1/40 backdrop-blur-xl border border-divider/60 p-8 rounded-3xl shadow-2xl animate-in fade-in slide-in-from-bottom-8 duration-500">
-        <div className="text-center space-y-3 mb-8">
+      <div className="relative max-w-md w-full bg-content1/40 backdrop-blur-xl border border-divider/60 p-8 rounded-3xl shadow-2xl animate-in fade-in slide-in-from-bottom-8 duration-500 space-y-6">
+        <div className="text-center space-y-3">
           <div className="inline-flex items-center justify-center p-3 rounded-2xl bg-primary/10 border border-primary/20 mb-2">
             <CarFront className="w-8 h-8 text-primary" />
           </div>
@@ -70,32 +76,51 @@ export default function Login() {
           </p>
         </div>
 
-        <form onSubmit={handleLogin} className="space-y-5">
-          <div className="space-y-4">
+        {/* Premium Inline Error Card */}
+        {errorMsg && (
+          <div className="p-4 bg-danger/10 border border-danger/20 rounded-2xl flex items-start gap-3 animate-in fade-in slide-in-from-top-2 duration-300">
+            <AlertCircle className="w-5 h-5 text-danger shrink-0 mt-0.5" />
+            <div className="space-y-1">
+              <p className="text-sm font-bold text-danger">Authentication Error</p>
+              <p className="text-xs text-danger/80 leading-relaxed">{errorMsg}</p>
+            </div>
+          </div>
+        )}
+
+        <form onSubmit={handleLogin} className="space-y-6">
+          <div className="space-y-6">
             <Input
               type="email"
               label="Email Address"
+              labelPlacement="outside"
               placeholder="you@example.com"
               variant="bordered"
               isRequired
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              startContent={<Mail className="w-4 h-4 text-default-400" />}
+              onChange={(e) => {
+                setErrorMsg("");
+                setEmail(e.target.value);
+              }}
+              startContent={<Mail className="w-4 h-4 text-default-400 mr-1" />}
               classNames={{
-                inputWrapper: "border-divider/60 hover:border-primary/50 focus-within:!border-primary transition-all duration-200"
+                inputWrapper: "h-12 border-divider/60 hover:border-primary/50 focus-within:!border-primary transition-all duration-200 mt-1.5"
               }}
             />
             <Input
               type="password"
               label="Password"
-              placeholder="••••••••"
+              labelPlacement="outside"
+              placeholder="Enter your password"
               variant="bordered"
               isRequired
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              startContent={<Lock className="w-4 h-4 text-default-400" />}
+              onChange={(e) => {
+                setErrorMsg("");
+                setPassword(e.target.value);
+              }}
+              startContent={<Lock className="w-4 h-4 text-default-400 mr-1" />}
               classNames={{
-                inputWrapper: "border-divider/60 hover:border-primary/50 focus-within:!border-primary transition-all duration-200"
+                inputWrapper: "h-12 border-divider/60 hover:border-primary/50 focus-within:!border-primary transition-all duration-200 mt-1.5"
               }}
             />
           </div>
@@ -135,7 +160,7 @@ export default function Login() {
           </Button>
         </form>
 
-        <div className="text-center text-sm mt-8 border-t border-divider/40 pt-6">
+        <div className="text-center text-sm border-t border-divider/40 pt-6">
           <span className="text-default-500">Don't have an account? </span>
           <Link as={NextLink} href="/register" size="sm" className="font-semibold text-primary hover:underline">
             Sign up now

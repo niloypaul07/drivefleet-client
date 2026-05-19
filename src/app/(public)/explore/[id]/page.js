@@ -101,13 +101,24 @@ export default function CarDetails({ params }) {
         {/* Right Column: Dynamic Car Specs & Info */}
         <div className="lg:col-span-6 bg-content1 border border-divider rounded-[24px] p-8 md:p-10 shadow-xl space-y-8">
           
-          {/* Category, Title & Price */}
+          {/* Category & Title */}
           <div className="space-y-3">
             <span className="text-default-400 text-xs font-black tracking-widest uppercase block">{car.type}</span>
             <h1 className="text-4xl md:text-5xl font-black text-foreground tracking-tight leading-tight">{car.modelName}</h1>
-            <div className="flex items-baseline gap-1.5 pt-2">
-              <span className="text-4xl font-black text-foreground">${car.price}</span>
-              <span className="text-default-500 font-medium text-base">/ day</span>
+          </div>
+
+          {/* Modern Status & Price Card */}
+          <div className="bg-default-50 border border-divider p-6 rounded-2xl flex items-center justify-between shadow-sm">
+            <div className="space-y-1">
+              <span className="text-default-400 text-xs font-bold uppercase tracking-wider block">AVAILABILITY</span>
+              <div className="flex items-center gap-2.5">
+                <span className={`w-3.5 h-3.5 rounded-full inline-block ${car.status === "Available" ? "bg-primary animate-pulse" : "bg-danger"}`}></span>
+                <span className="text-xl font-black text-foreground tracking-wide">{car.status}</span>
+              </div>
+            </div>
+            <div className="text-right space-y-1">
+              <span className="text-default-400 text-xs font-bold uppercase tracking-wider block">DAILY RATE</span>
+              <span className="text-2xl font-black text-foreground">${car.price} <span className="text-xs text-default-500 font-bold">/ DAY</span></span>
             </div>
           </div>
 
@@ -148,26 +159,20 @@ export default function CarDetails({ params }) {
             </div>
           </div>
 
-          {/* STATUS block */}
-          <div className="bg-[#121212] p-6 rounded-[18px] text-white shadow-lg space-y-1">
-            <span className="text-[#E2FFA7] text-xs font-black uppercase tracking-widest">STATUS</span>
-            <h2 className="text-3xl font-black tracking-wide">{car.status}</h2>
-          </div>
-
           {/* Booking Trigger Button */}
-          <div className="pt-2">
+          <div className="pt-4 space-y-4 border-t border-divider">
             <Button 
               onClick={onOpen} 
               isDisabled={car.status !== "Available"}
-              className="w-full h-16 bg-[#E2FFA7] disabled:bg-default-200 text-[#121212] disabled:text-default-400 font-extrabold text-base rounded-xl shadow-xl transition-all duration-300 transform hover:scale-[1.01] hover:bg-[#d6f58f]"
+              className="w-full h-16 bg-primary disabled:bg-default-200 text-white disabled:text-default-400 font-extrabold text-base rounded-xl shadow-xl shadow-primary/10 transition-all duration-300 transform hover:scale-[1.01] hover:opacity-90"
             >
               {car.status === "Available" ? "Book Now" : "Currently Unavailable"}
             </Button>
 
             {/* Inline Login Reminder link if user is guest */}
             {!user && (
-              <div className="text-center mt-4">
-                <Link href="/login" className="text-sm font-bold text-foreground underline hover:text-default-500 transition-colors">
+              <div className="text-center">
+                <Link href="/login" className="text-sm font-bold text-primary underline hover:text-primary/80 transition-colors">
                   Log in
                 </Link>
                 <span className="text-sm text-default-500 font-semibold"> to book this car.</span>

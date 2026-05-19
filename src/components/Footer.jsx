@@ -11,7 +11,15 @@ export default function Footer() {
           <div className="col-span-1 md:col-span-1">
             <div className="flex items-center gap-2 mb-4">
               <CarFront className="w-8 h-8 text-primary" />
-              <span className="font-bold text-xl tracking-tight">DriveFleet</span>
+              <div className="flex flex-col leading-none">
+              <span className="font-extrabold text-base sm:text-lg tracking-tight text-foreground">
+                Drive
+              </span>
+
+              <span className="font-extrabold text-base sm:text-lg tracking-tight text-primary -mt-1">
+                Fleet
+              </span>
+            </div>
             </div>
             <p className="text-default-500 mb-6">
               Experience the best car rental service with our premium fleet. Your journey, our priority.

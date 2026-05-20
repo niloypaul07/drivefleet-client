@@ -59,6 +59,7 @@ export default function Home() {
                 color="primary"
                 size="lg"
                 endContent={<ArrowRight className="w-5 h-5" />}
+                className="rounded-2xl px-6 font-bold"
               >
                 Explore Cars
               </Button>

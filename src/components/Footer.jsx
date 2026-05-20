@@ -68,15 +68,15 @@ export default function Footer() {
             <ul className="space-y-4">
               <li className="flex items-start gap-3 text-default-500">
                 <MapPin className="w-5 h-5 shrink-0 text-primary" />
-                <span>123 Drive Street, Auto City, AC 12345</span>
+                <span>Dhaka,Bangladesh</span>
               </li>
               <li className="flex items-center gap-3 text-default-500">
                 <Phone className="w-5 h-5 shrink-0 text-primary" />
-                <span>+1 (555) 123-4567</span>
+                <span>+8801673141765</span>
               </li>
               <li className="flex items-center gap-3 text-default-500">
                 <Mail className="w-5 h-5 shrink-0 text-primary" />
-                <span>support@drivefleet.com</span>
+                <span>niloypaul81@gmail.com</span>
               </li>
             </ul>
           </div>

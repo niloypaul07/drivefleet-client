@@ -180,7 +180,7 @@ export default function AddCar() {
           <div className="pt-6">
             <Button 
               size="lg" 
-              className="w-full mt-2 h-16 bg-primary hover:bg-primary/95 text-primary-foreground font-extrabold rounded-2xl shadow-xl transition-all duration-300 transform hover:scale-[1.01] text-base tracking-wider" 
+              className="w-full mt-5 h-16 bg-primary hover:bg-primary/95 text-primary-foreground font-extrabold rounded-2xl shadow-xl transition-all duration-300 transform hover:scale-[1.01] text-base tracking-wider" 
               type="submit" 
               isLoading={isLoading}
             >

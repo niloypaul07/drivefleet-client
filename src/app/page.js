@@ -2,7 +2,7 @@
 
 import { Button, Spinner } from "@heroui/react";
 import Link from "next/link";
-import { ArrowRight, ShieldCheck, Clock, MapPin } from "lucide-react";
+import { ArrowRight, ShieldCheck, Clock, MapPin, Users, CarFront } from "lucide-react";
 import { useEffect, useState } from "react";
 import api from "@/lib/axios";
 
@@ -68,86 +68,153 @@ export default function Home() {
       </section>
 
       {/* Available Cars Section */}
-      <section className="container mx-auto px-6">
-        <div className="flex flex-col md:flex-row justify-between items-end mb-8 gap-4">
-          <div>
-            <h2 className="text-3xl font-bold mb-2">
-              Featured Vehicles
-            </h2>
+      {/* FEATURED VEHICLES */}
+<section className="container mx-auto px-6 py-20">
+  {/* SECTION HEADER */}
+  <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-6 mb-14">
+    <div>
+      <p className="text-primary font-semibold mb-2">
+        Featured Collection
+      </p>
 
-            <p className="text-default-500">
-              Discover our most popular recent rentals.
-            </p>
-          </div>
+      <h2 className="text-4xl md:text-5xl font-black tracking-tight mb-3">
+        Featured Vehicles
+      </h2>
 
-          <Button
-            variant="light"
-            color="primary"
-            endContent={<ArrowRight className="w-4 h-4" />}
-            as={Link}
-            href="/explore"
-          >
-            View All
-          </Button>
-        </div>
+      <p className="text-default-500 text-lg">
+        Discover our most popular recent rentals.
+      </p>
+    </div>
 
-        {isLoading ? (
-          <div className="flex justify-center items-center py-20">
-            <Spinner size="lg" />
-          </div>
-        ) : recentCars.length === 0 ? (
-          <p className="text-default-500 text-center py-10">
-            No cars available right now.
-          </p>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {recentCars.map((car) => (
-              <div
-                key={car._id}
-                className="bg-content1 border border-divider rounded-2xl overflow-hidden hover:shadow-lg transition-all hover:-translate-y-1"
-              >
-                <div className="aspect-[16/9] bg-default-200 relative">
-                  <img
-                    src={car.image || car.imageUrl}
-                    alt={car.modelName}
-                    className="w-full h-full object-cover"
-                  />
+    <Button
+      as={Link}
+      href="/explore"
+      color="primary"
+      variant="flat"
+      size="lg"
+      className="rounded-2xl px-6 font-bold"
+      endContent={<ArrowRight className="w-5 h-5" />}
+    >
+      View All Cars
+    </Button>
+  </div>
 
-                  <div className="absolute top-4 right-4 bg-background/80 backdrop-blur-md px-3 py-1 rounded-full text-sm font-semibold">
-                    ${car.price} / day
-                  </div>
-                </div>
+  {/* LOADING */}
+  {isLoading ? (
+    <div className="flex flex-col justify-center items-center py-32">
+      <Spinner size="lg" color="primary" />
 
-                <div className="p-6">
-                  <h3 className="text-xl font-bold mb-2">
-                    {car.modelName}
-                  </h3>
+      <p className="mt-4 text-default-500">
+        Loading premium cars...
+      </p>
+    </div>
+  ) : recentCars.length === 0 ? (
+    <div className="text-center py-32 border border-dashed border-divider rounded-3xl bg-content1">
+      <div className="w-20 h-20 rounded-full bg-default-100 flex items-center justify-center mx-auto mb-6">
+        <CarFront className="w-10 h-10 text-default-400" />
+      </div>
 
-                  <div className="flex justify-between items-center text-sm text-default-500 mb-6">
-                    <span className="bg-default-100 px-2 py-1 rounded">
-                      {car.type}
-                    </span>
+      <h3 className="text-2xl font-bold mb-3">
+        No Cars Available
+      </h3>
 
-                    <span className="bg-default-100 px-2 py-1 rounded">
-                      {car.seats} Seats
-                    </span>
-                  </div>
+      <p className="text-default-500">
+        Check back again later for new arrivals.
+      </p>
+    </div>
+  ) : (
+    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+      {recentCars.map((car) => (
+        <div
+          key={car._id}
+          className="group relative overflow-hidden rounded-[32px] bg-content1 border border-divider hover:border-primary/30 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-primary/10"
+        >
+          {/* IMAGE */}
+          <div className="relative h-[260px] overflow-hidden">
+            <img
+              src={car.image || car.imageUrl}
+              alt={car.modelName}
+              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+            />
 
-                  <Button
-                    color="primary"
-                    variant="flat"
-                    className="w-full"
-                    as={Link}
-                    href={`/explore/${car._id}`}
-                  >
-                    View Details
-                  </Button>
-                </div>
+            {/* GRADIENT */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+
+            {/* PRICE */}
+            <div className="absolute top-4 right-4">
+              <div className="bg-background/80 backdrop-blur-xl border border-white/10 px-4 py-2 rounded-2xl">
+                <p className="text-xs text-default-500">
+                  Starting from
+                </p>
+
+                <p className="font-black text-lg">
+                  ${car.price}
+                  <span className="text-xs font-medium text-default-500">
+                    /day
+                  </span>
+                </p>
               </div>
-            ))}
+            </div>
+
+            {/* TYPE */}
+            <div className="absolute bottom-4 left-4">
+              <div className="bg-primary/80 backdrop-blur-xl text-white border border-white/10 px-4 py-2 rounded-2xl text-sm font-semibold">
+                {car.type}
+              </div>
+            </div>
           </div>
-        )}
-      </section>
+
+          {/* CONTENT */}
+          <div className="p-6">
+            {/* TITLE */}
+            <div className="mb-4">
+              <h3 className="text-2xl font-black mb-2 tracking-tight">
+                {car.modelName}
+              </h3>
+
+              <p className="text-default-500 line-clamp-2 leading-relaxed">
+                {car.description}
+              </p>
+            </div>
+
+            {/* INFO */}
+            <div className="flex items-center gap-3 mb-6">
+              <div className="flex items-center gap-2 bg-default-100 px-4 py-2 rounded-2xl">
+                <Users className="w-4 h-4 text-primary" />
+
+                <span className="text-sm font-semibold">
+                  {car.seats} Seats
+                </span>
+              </div>
+
+              <div className="flex items-center gap-2 bg-default-100 px-4 py-2 rounded-2xl">
+                <CarFront className="w-4 h-4 text-primary" />
+
+                <span className="text-sm font-semibold">
+                  Premium
+                </span>
+              </div>
+            </div>
+
+            {/* BUTTON */}
+            <Button
+              as={Link}
+              href={`/explore/${car._id}`}
+              color="primary"
+              className="w-full h-12 rounded-2xl font-bold text-base shadow-lg shadow-primary/20"
+              endContent={<ArrowRight className="w-5 h-5" />}
+            >
+              View Details
+            </Button>
+          </div>
+
+          {/* HOVER EFFECT */}
+          <div className="absolute inset-0 rounded-[32px] ring-1 ring-primary/0 group-hover:ring-primary/20 transition-all pointer-events-none" />
+        </div>
+      ))}
+    </div>
+  )}
+</section>
 
       {/* Why Choose Us */}
       <section className="bg-default-50 py-16 border-y border-divider">

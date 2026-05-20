@@ -48,7 +48,7 @@ export default function Login() {
     try {
       await authClient.signIn.social({
         provider: "google",
-        callbackURL: "http://localhost:3000/", // redirect to home after login
+        callbackURL: typeof window !== "undefined" ? window.location.origin + "/" : "http://localhost:3000/", // redirect to home after login
       });
     } catch (err) {
       setErrorMsg("Google sign in failed. Please try again.");
